@@ -25,13 +25,12 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
+    //TODO --> Handle login of deleted users
     @PostMapping
     public ResponseEntity<TokenDTO> loginUser(@RequestBody @Valid LoginUserDTO login) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.username(), login.password());
         Authentication authenticate = authenticationManager.authenticate(token);
-
         String tokenJWT = tokenService.generateToken((User) authenticate.getPrincipal());
-
         return ResponseEntity.ok(new TokenDTO(tokenJWT));
     }
 

@@ -1,8 +1,10 @@
 package com.courses.api.Api.infra.security;
 
 import com.courses.api.Api.entity.User;
+import com.courses.api.Api.infra.exception.UserException;
 import com.courses.api.Api.repository.UserRepository;
 import com.courses.api.Api.service.TokenService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     private UserRepository userRepository;
 
 
+    //TODO --> Refactor exceptions
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String tokenJWT = getToken(request);
@@ -35,6 +38,9 @@ public class SecurityFilter extends OncePerRequestFilter {
             Optional<User> user = userRepository.findByUsername(subject);
             if (user.isEmpty()) {
                 throw new UsernameNotFoundException("User was not found");
+            }
+            if(!user.get().getActive()) {
+                throw new EntityNotFoundException("User is deleted");
             }
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.get().getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
