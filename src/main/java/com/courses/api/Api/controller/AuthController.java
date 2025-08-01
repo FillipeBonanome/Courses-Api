@@ -1,6 +1,7 @@
 package com.courses.api.Api.controller;
 
 import com.courses.api.Api.dto.LoginUserDTO;
+import com.courses.api.Api.dto.TokenDTO;
 import com.courses.api.Api.entity.User;
 import com.courses.api.Api.service.TokenService;
 import jakarta.validation.Valid;
@@ -25,11 +26,13 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<String> loginUser(@RequestBody @Valid LoginUserDTO login) {
+    public ResponseEntity<TokenDTO> loginUser(@RequestBody @Valid LoginUserDTO login) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.username(), login.password());
         Authentication authenticate = authenticationManager.authenticate(token);
 
-        return ResponseEntity.ok((tokenService.generateToken((User) authenticate.getPrincipal())));
+        String tokenJWT = tokenService.generateToken((User) authenticate.getPrincipal());
+
+        return ResponseEntity.ok(new TokenDTO(tokenJWT));
     }
 
 }
