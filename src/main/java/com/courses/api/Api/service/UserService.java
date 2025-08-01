@@ -8,6 +8,7 @@ import com.courses.api.Api.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +19,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public ReadUserDTO registerUser(@Valid CreateUserDTO userDTO) {
         if(userRepository.findByEmail(userDTO.email()).isPresent()) {
             throw new DuplicateResourceException("User", "Email", userDTO.email());
@@ -25,7 +29,11 @@ public class UserService {
         if(userRepository.findByUsername(userDTO.username()).isPresent()) {
             throw new DuplicateResourceException("User", "Email", userDTO.username());
         }
-        User user = userRepository.save(new User(userDTO));
+
+        User newUser = new User(userDTO);
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        User user = userRepository.save(newUser);
+        System.out.println("Encoded password: " + user.getPassword());
         return new ReadUserDTO(user);
     }
 
