@@ -3,7 +3,9 @@ package com.courses.api.Api.service;
 import com.courses.api.Api.dto.CreateUserDTO;
 import com.courses.api.Api.dto.ReadUserDTO;
 import com.courses.api.Api.entity.User;
+import com.courses.api.Api.entity.UserRoles;
 import com.courses.api.Api.infra.exception.DuplicateResourceException;
+import com.courses.api.Api.infra.exception.UserException;
 import com.courses.api.Api.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -45,21 +47,23 @@ public class UserService {
         return new ReadUserDTO(userOptional.get());
     }
 
-    //TODO --> Change return type
-    public String deleteById(Long id) {
+    public void deleteById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if(userOptional.isEmpty()) {
             throw new EntityNotFoundException();
         }
+
         User user = userOptional.get();
 
-        //Logic deletion
+        if (user.getUserRole() == UserRoles.ROLE_ADMIN) {
+            throw new UserException("This user can't be deleted");
+        }
+
         if (user.getActive()) {
             user.setActive(false);
             userRepository.save(user);
         }
 
-        return "User deleted";
     }
 
 }

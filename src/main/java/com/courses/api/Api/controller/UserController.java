@@ -50,7 +50,8 @@ public class UserController {
     @Transactional
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> deleteById(@PathVariable(name = "id") Long id) {
-        return ResponseEntity.ok(userService.deleteById(id));
+        userService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -2,6 +2,7 @@ package com.courses.api.Api.infra.handler;
 
 import com.courses.api.Api.dto.ErrorDTO;
 import com.courses.api.Api.infra.exception.DuplicateResourceException;
+import com.courses.api.Api.infra.exception.UserException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,17 @@ public class ErrorHandler {
                 LocalDateTime.now()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<ErrorDTO> handleUserException(UserException exception, WebRequest webRequest) {
+        ErrorDTO error = new ErrorDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 }
