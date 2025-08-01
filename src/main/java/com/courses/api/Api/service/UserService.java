@@ -33,7 +33,6 @@ public class UserService {
         User newUser = new User(userDTO);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         User user = userRepository.save(newUser);
-        System.out.println("Encoded password: " + user.getPassword());
         return new ReadUserDTO(user);
     }
 
