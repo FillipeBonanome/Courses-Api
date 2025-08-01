@@ -5,9 +5,12 @@ import com.courses.api.Api.dto.ReadUserDTO;
 import com.courses.api.Api.entity.User;
 import com.courses.api.Api.infra.exception.DuplicateResourceException;
 import com.courses.api.Api.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,6 +27,15 @@ public class UserService {
         }
         User user = userRepository.save(new User(userDTO));
         return new ReadUserDTO(user);
+    }
+
+    //TODO --> Authorization for reading users
+    public ReadUserDTO getById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return new ReadUserDTO(userOptional.get());
     }
 
 }
