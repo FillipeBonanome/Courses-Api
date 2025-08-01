@@ -37,6 +37,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 throw new UsernameNotFoundException("User was not found");
             }
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.get().getAuthorities());
+            System.out.println("role: " + user.get().getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
         filterChain.doFilter(request, response);

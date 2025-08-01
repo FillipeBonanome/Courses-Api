@@ -45,4 +45,21 @@ public class UserService {
         return new ReadUserDTO(userOptional.get());
     }
 
+    //TODO --> Change return type
+    public String deleteById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        User user = userOptional.get();
+
+        //Logic deletion
+        if (user.getActive()) {
+            user.setActive(false);
+            userRepository.save(user);
+        }
+
+        return "User deleted";
+    }
+
 }

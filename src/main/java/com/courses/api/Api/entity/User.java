@@ -2,11 +2,11 @@ package com.courses.api.Api.entity;
 
 import com.courses.api.Api.dto.CreateUserDTO;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -34,6 +34,7 @@ public class User implements UserDetails {
     private String email;
     @Enumerated(EnumType.STRING)
     private UserRoles userRole;
+    private Boolean active;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -42,14 +43,15 @@ public class User implements UserDetails {
         this.username = userDTO.username();
         this.password = userDTO.password();
         this.email = userDTO.email();
-        this.userRole = UserRoles.USER;
+        this.active = true;
+        this.userRole = UserRoles.ROLE_USER;
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(this.userRole.toString()));
     }
 
     @Override
