@@ -34,11 +34,13 @@ public class UserController {
         var authorities = authentication.getAuthorities();
         boolean isAdmin = authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
-        //Testing some stuff
-        Optional<User> userOptional = (Optional<User>) authentication.getPrincipal();
-        User user = userOptional.get();
-        if(isAdmin || user.getId().equals(id)) {
-            return ResponseEntity.ok(userService.getById(id));
+        //TODO --> Refactor
+        var userOptional = (Optional<User>) authentication.getPrincipal();
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (isAdmin || user.getId().equals(id)) {
+                return ResponseEntity.ok(userService.getById(id));
+            }
         }
 
         return ResponseEntity.ok(new SimpleReadUserDTO(userService.getById(id).name()));
@@ -49,22 +51,6 @@ public class UserController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> deleteById(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(userService.deleteById(id));
-    }
-
-    @GetMapping
-    public String test(Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return "Acesso negado. Por favor, autentique-se.";
-        }
-
-        var authorities = authentication.getAuthorities();
-        boolean isAdmin = authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-        if (isAdmin) {
-            return "UM ADMIN";
-        } else {
-            return "NAO EH ADMIN";
-        }
     }
 
 }
