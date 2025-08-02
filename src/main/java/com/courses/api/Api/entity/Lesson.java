@@ -1,5 +1,6 @@
 package com.courses.api.Api.entity;
 
+import com.courses.api.Api.dto.UpdateLessonDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,4 +35,19 @@ public class Lesson {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public void updateLesson(UpdateLessonDTO lessonDTO) {
+        if (lessonDTO.title() != null) {
+            this.title = lessonDTO.title();
+        }
+        if (lessonDTO.URL() != null) {
+            this.URL = lessonDTO.URL();
+        }
+        if (lessonDTO.description() != null) {
+            this.description = lessonDTO.description();
+        }
+        if(lessonDTO.order() != null) {
+            this.order = lessonDTO.order();
+        }
+        this.updatedAt = LocalDateTime.now();
+    }
 }

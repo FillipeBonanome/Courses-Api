@@ -2,6 +2,7 @@ package com.courses.api.Api.service;
 
 import com.courses.api.Api.dto.CreateLessonDTO;
 import com.courses.api.Api.dto.ReadLessonDTO;
+import com.courses.api.Api.dto.UpdateLessonDTO;
 import com.courses.api.Api.entity.Course;
 import com.courses.api.Api.entity.Lesson;
 import com.courses.api.Api.repository.CourseRepository;
@@ -75,5 +76,26 @@ public class LessonService {
                 lesson.getCourse().getId()
         );
 
+    }
+
+    //TODO --> Sanitize description for markdown
+    public ReadLessonDTO updateLesson(Long id, UpdateLessonDTO lessonDTO) {
+
+        Optional<Lesson> optionalLesson = lessonRepository.findById(id);
+
+        if (optionalLesson.isEmpty()) {
+            throw new EntityNotFoundException("Lesson not found");
+        }
+
+        Lesson lesson = optionalLesson.get();
+        lesson.updateLesson(lessonDTO);
+        Lesson savedLesson = lessonRepository.save(lesson);
+        return new ReadLessonDTO(
+                savedLesson.getTitle(),
+                savedLesson.getURL(),
+                savedLesson.getDescription(),
+                savedLesson.getOrder(),
+                savedLesson.getCourse().getId()
+        );
     }
 }
