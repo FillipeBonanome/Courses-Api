@@ -2,6 +2,7 @@ package com.courses.api.Api.service;
 
 import com.courses.api.Api.dto.course.CreateCourseDTO;
 import com.courses.api.Api.dto.course.ReadCourseDTO;
+import com.courses.api.Api.dto.course.UpdateCourseDTO;
 import com.courses.api.Api.dto.user.SimpleReadUserDTO;
 import com.courses.api.Api.entity.Course;
 import com.courses.api.Api.entity.User;
@@ -104,6 +105,20 @@ public class CourseService {
 
         Course course = courseOptional.get();
         course.setPublished(true);
+        Course savedCourse = courseRepository.save(course);
+        return new ReadCourseDTO(savedCourse);
+    }
+
+    public ReadCourseDTO updateCourse(Long id, UpdateCourseDTO courseDTO) {
+        Optional<Course> courseOptional = courseRepository.findById(id);
+
+        if (courseOptional.isEmpty()) {
+            throw new EntityNotFoundException("Course not found");
+        }
+
+        Course course = courseOptional.get();
+        course.updateCourse(courseDTO);
+
         Course savedCourse = courseRepository.save(course);
         return new ReadCourseDTO(savedCourse);
     }

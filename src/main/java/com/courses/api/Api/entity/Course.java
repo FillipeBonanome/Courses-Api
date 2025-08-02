@@ -1,5 +1,6 @@
 package com.courses.api.Api.entity;
 
+import com.courses.api.Api.dto.course.UpdateCourseDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -39,4 +40,22 @@ public class Course {
     private LocalDateTime updatedAt;
 
 
+    public void updateCourse(UpdateCourseDTO courseDTO) {
+        if (courseDTO.title() != null) {
+            this.title = courseDTO.title();
+        }
+        if (courseDTO.description() != null) {
+            this.description = courseDTO.description();
+        }
+        if (courseDTO.category() != null) {
+            this.category = courseDTO.category();
+        }
+        if (courseDTO.thumbnail() != null) {
+            this.thumbnailFileName = courseDTO.thumbnail();
+        }
+        if(courseDTO.slug() != null) {
+            this.slug = courseDTO.slug();
+        }
+        this.updatedAt = LocalDateTime.now();
+    }
 }

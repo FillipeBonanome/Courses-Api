@@ -2,6 +2,7 @@ package com.courses.api.Api.controller;
 
 import com.courses.api.Api.dto.course.CreateCourseDTO;
 import com.courses.api.Api.dto.course.ReadCourseDTO;
+import com.courses.api.Api.dto.course.UpdateCourseDTO;
 import com.courses.api.Api.service.CourseService;
 import com.courses.api.Api.service.UserService;
 import jakarta.validation.Valid;
@@ -36,7 +37,7 @@ public class CourseController {
 
     @PostMapping
     @Transactional
-    @PreAuthorize("hasAuthority('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
     public ResponseEntity<ReadCourseDTO> createCourse(@Valid @RequestBody CreateCourseDTO courseDTO) {
         return ResponseEntity.ok(courseService.registerCourse(courseDTO));
     }
@@ -52,10 +53,16 @@ public class CourseController {
         return ResponseEntity.ok(courseService.deleteCourse(id));
     }
 
-    @PutMapping("{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
+    @PatchMapping("{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
     public ResponseEntity<ReadCourseDTO> publicCourse(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(courseService.publishCourse(id));
+    }
+
+    @PutMapping("{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
+    public ResponseEntity<ReadCourseDTO> updateCourse(@PathVariable(name = "id") Long id, @RequestBody UpdateCourseDTO courseDTO) {
+        return ResponseEntity.ok(courseService.updateCourse(id, courseDTO));
     }
 
 }
