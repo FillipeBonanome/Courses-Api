@@ -1,9 +1,7 @@
 package com.courses.api.Api.controller;
 
-import com.courses.api.Api.dto.CreateCourseDTO;
-import com.courses.api.Api.dto.ReadCourseDTO;
-import com.courses.api.Api.repository.CourseRepository;
-import com.courses.api.Api.repository.UserRepository;
+import com.courses.api.Api.dto.course.CreateCourseDTO;
+import com.courses.api.Api.dto.course.ReadCourseDTO;
 import com.courses.api.Api.service.CourseService;
 import com.courses.api.Api.service.UserService;
 import jakarta.validation.Valid;

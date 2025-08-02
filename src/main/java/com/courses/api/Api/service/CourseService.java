@@ -1,7 +1,7 @@
 package com.courses.api.Api.service;
 
-import com.courses.api.Api.dto.CreateCourseDTO;
-import com.courses.api.Api.dto.ReadCourseDTO;
+import com.courses.api.Api.dto.course.CreateCourseDTO;
+import com.courses.api.Api.dto.course.ReadCourseDTO;
 import com.courses.api.Api.dto.user.SimpleReadUserDTO;
 import com.courses.api.Api.entity.Course;
 import com.courses.api.Api.entity.User;
