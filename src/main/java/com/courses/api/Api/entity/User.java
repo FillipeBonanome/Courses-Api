@@ -85,5 +85,6 @@ public class User implements UserDetails {
         if (userDTO.username() != null) {
             this.username = userDTO.username();
         }
+        this.updatedAt = LocalDateTime.now();
     }
 }
