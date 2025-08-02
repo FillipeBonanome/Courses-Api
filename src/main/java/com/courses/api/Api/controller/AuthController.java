@@ -1,6 +1,6 @@
 package com.courses.api.Api.controller;
 
-import com.courses.api.Api.dto.LoginUserDTO;
+import com.courses.api.Api.dto.user.LoginUserDTO;
 import com.courses.api.Api.dto.TokenDTO;
 import com.courses.api.Api.entity.User;
 import com.courses.api.Api.service.TokenService;

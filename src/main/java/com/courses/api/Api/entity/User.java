@@ -1,7 +1,7 @@
 package com.courses.api.Api.entity;
 
-import com.courses.api.Api.dto.CreateUserDTO;
-import com.courses.api.Api.dto.UpdateUserDTO;
+import com.courses.api.Api.dto.user.CreateUserDTO;
+import com.courses.api.Api.dto.user.UpdateUserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -24,6 +24,8 @@ public class Course {
     private String description;
     @NotBlank
     private String category;
+
+    @Column(name = "thumbnail")
     private String thumbnailFileName;
 
     @ManyToOne(fetch = FetchType.LAZY)

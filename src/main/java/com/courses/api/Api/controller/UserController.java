@@ -1,9 +1,9 @@
 package com.courses.api.Api.controller;
 
-import com.courses.api.Api.dto.CreateUserDTO;
-import com.courses.api.Api.dto.ReadUserDTO;
-import com.courses.api.Api.dto.SimpleReadUserDTO;
-import com.courses.api.Api.dto.UpdateUserDTO;
+import com.courses.api.Api.dto.user.CreateUserDTO;
+import com.courses.api.Api.dto.user.ReadUserDTO;
+import com.courses.api.Api.dto.user.SimpleReadUserDTO;
+import com.courses.api.Api.dto.user.UpdateUserDTO;
 import com.courses.api.Api.entity.User;
 import com.courses.api.Api.infra.exception.UserException;
 import com.courses.api.Api.service.UserService;

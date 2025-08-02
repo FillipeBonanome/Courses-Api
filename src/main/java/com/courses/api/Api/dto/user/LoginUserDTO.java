@@ -1,4 +1,4 @@
-package com.courses.api.Api.dto;
+package com.courses.api.Api.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 

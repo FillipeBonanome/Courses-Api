@@ -1,4 +1,4 @@
-package com.courses.api.Api.dto;
+package com.courses.api.Api.dto.user;
 
 import com.courses.api.Api.entity.User;
 import com.courses.api.Api.entity.UserRoles;

@@ -1,8 +1,8 @@
 package com.courses.api.Api.service;
 
-import com.courses.api.Api.dto.CreateUserDTO;
-import com.courses.api.Api.dto.ReadUserDTO;
-import com.courses.api.Api.dto.UpdateUserDTO;
+import com.courses.api.Api.dto.user.CreateUserDTO;
+import com.courses.api.Api.dto.user.ReadUserDTO;
+import com.courses.api.Api.dto.user.UpdateUserDTO;
 import com.courses.api.Api.entity.User;
 import com.courses.api.Api.entity.UserRoles;
 import com.courses.api.Api.infra.exception.DuplicateResourceException;
@@ -13,7 +13,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
