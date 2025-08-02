@@ -1,5 +1,6 @@
 package com.courses.api.Api.service;
 
+import com.courses.api.Api.dto.ReadLessonDTO;
 import com.courses.api.Api.dto.course.CreateCourseDTO;
 import com.courses.api.Api.dto.course.ReadCourseDTO;
 import com.courses.api.Api.dto.course.UpdateCourseDTO;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -44,6 +46,13 @@ public class CourseService {
                 new SimpleReadUserDTO(course.getInstructor().getName()),
                 course.getPublished(),
                 course.getSlug(),
+                course.getLessons().stream().map(l -> new ReadLessonDTO(
+                        l.getTitle(),
+                        l.getURL(),
+                        l.getDescription(),
+                        l.getOrder(),
+                        l.getCourse().getId()
+                )).toList(),
                 course.getCreatedAt(),
                 course.getUpdatedAt()
         );
@@ -71,6 +80,7 @@ public class CourseService {
                 user,
                 false,
                 courseDTO.slug(),
+                new ArrayList<>(),
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );

@@ -1,9 +1,11 @@
 package com.courses.api.Api.dto.course;
 
+import com.courses.api.Api.dto.ReadLessonDTO;
 import com.courses.api.Api.dto.user.SimpleReadUserDTO;
 import com.courses.api.Api.entity.Course;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 //TODO --> add lessons
 public record ReadCourseDTO(
@@ -15,6 +17,7 @@ public record ReadCourseDTO(
         SimpleReadUserDTO instructor,
         Boolean published,
         String slug,
+        List<ReadLessonDTO> lessons,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
@@ -28,6 +31,13 @@ public record ReadCourseDTO(
                 new SimpleReadUserDTO(course.getInstructor().getName()),
                 course.getPublished(),
                 course.getSlug(),
+                course.getLessons().stream().map(l -> new ReadLessonDTO(
+                        l.getTitle(),
+                        l.getURL(),
+                        l.getDescription(),
+                        l.getOrder(),
+                        l.getCourse().getId()
+                )).toList(),
                 course.getCreatedAt(),
                 course.getUpdatedAt());
     }

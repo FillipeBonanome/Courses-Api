@@ -26,6 +26,7 @@ public class Lesson {
     @NotBlank
     private String description;
     @NotNull
+    @Column(name = "lesson_order")
     private int order;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)

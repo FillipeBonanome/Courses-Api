@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,8 +36,9 @@ public class Course {
     private User instructor;
     private Boolean published;
     private String slug;
-    //TODO --> add lessons
-    //List<Lesson> lessons = new ArrayList<>()
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Lesson> lessons = new ArrayList<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
