@@ -51,7 +51,6 @@ public class UserController {
         return ResponseEntity.ok(new SimpleReadUserDTO(userService.getById(id).name()));
     }
 
-    //TODO --> Only for admins
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Page<ReadUserDTO>> getUsers(@PageableDefault(size = 10, sort = {"name"}) Pageable pageable) {
