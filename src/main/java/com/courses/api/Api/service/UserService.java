@@ -2,6 +2,7 @@ package com.courses.api.Api.service;
 
 import com.courses.api.Api.dto.CreateUserDTO;
 import com.courses.api.Api.dto.ReadUserDTO;
+import com.courses.api.Api.dto.UpdateUserDTO;
 import com.courses.api.Api.entity.User;
 import com.courses.api.Api.entity.UserRoles;
 import com.courses.api.Api.infra.exception.DuplicateResourceException;
@@ -71,6 +72,28 @@ public class UserService {
 
     public Page<ReadUserDTO> getUsers(Pageable pageable) {
         return userRepository.findAllByActiveTrue(pageable).map(ReadUserDTO::new);
+    }
+
+    public UpdateUserDTO updateUser(Long id, UpdateUserDTO userDTO) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+
+        User user = userOptional.get();
+        user.updateUser(userDTO);
+
+        //Refactor?
+        if (userDTO.password() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+        User savedUser = userRepository.save(user);
+        return new UpdateUserDTO(
+                savedUser.getName(),
+                savedUser.getUsername(),
+                savedUser.getPassword()
+        );
     }
 
 }

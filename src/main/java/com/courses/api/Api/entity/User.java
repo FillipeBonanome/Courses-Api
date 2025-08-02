@@ -1,6 +1,7 @@
 package com.courses.api.Api.entity;
 
 import com.courses.api.Api.dto.CreateUserDTO;
+import com.courses.api.Api.dto.UpdateUserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -72,5 +73,17 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void updateUser(UpdateUserDTO userDTO) {
+        if (userDTO.name() != null && !userDTO.name().isBlank()) {
+            this.name = userDTO.name();
+        }
+        if (userDTO.password() != null) {
+            this.password = userDTO.password();
+        }
+        if (userDTO.username() != null) {
+            this.username = userDTO.username();
+        }
     }
 }

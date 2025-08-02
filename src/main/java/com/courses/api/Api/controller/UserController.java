@@ -3,7 +3,9 @@ package com.courses.api.Api.controller;
 import com.courses.api.Api.dto.CreateUserDTO;
 import com.courses.api.Api.dto.ReadUserDTO;
 import com.courses.api.Api.dto.SimpleReadUserDTO;
+import com.courses.api.Api.dto.UpdateUserDTO;
 import com.courses.api.Api.entity.User;
+import com.courses.api.Api.infra.exception.UserException;
 import com.courses.api.Api.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,7 @@ public class UserController {
 
     //TODO --> Only for admins
     @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Page<ReadUserDTO>> getUsers(@PageableDefault(size = 10, sort = {"name"}) Pageable pageable) {
         return ResponseEntity.ok(userService.getUsers(pageable));
     }
@@ -61,6 +64,19 @@ public class UserController {
     public ResponseEntity<String> deleteById(@PathVariable(name = "id") Long id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    //TODO --> Refactor
+    @PutMapping
+    @Transactional
+    public ResponseEntity<UpdateUserDTO> updateUser(Authentication authentication, @RequestBody UpdateUserDTO userDTO) {
+        var userOptional = (Optional<User>) authentication.getPrincipal();
+        if (userOptional.isEmpty()) {
+            throw new UserException("User not found");
+        }
+
+        User user = userOptional.get();
+        return ResponseEntity.ok(userService.updateUser(user.getId(), userDTO));
     }
 
 }
