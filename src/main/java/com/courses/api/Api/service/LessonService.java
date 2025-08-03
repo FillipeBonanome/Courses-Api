@@ -5,6 +5,7 @@ import com.courses.api.Api.dto.ReadLessonDTO;
 import com.courses.api.Api.dto.UpdateLessonDTO;
 import com.courses.api.Api.entity.Course;
 import com.courses.api.Api.entity.Lesson;
+import com.courses.api.Api.infra.utils.UrlValidator;
 import com.courses.api.Api.repository.CourseRepository;
 import com.courses.api.Api.repository.LessonRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,12 +25,19 @@ public class LessonService {
     @Autowired
     private LessonRepository lessonRepository;
 
+    @Autowired
+    private UrlValidator urlValidator;
+
     //TODO --> Sanitize description for markdown
     public ReadLessonDTO registerLesson(@Valid CreateLessonDTO lessonDTO) {
         Optional<Course> courseOptional = courseRepository.findById(lessonDTO.courseId());
 
         if (courseOptional.isEmpty()) {
             throw new EntityNotFoundException("Course not found to create lesson");
+        }
+
+        if (!urlValidator.isValidYouTubeUrl(lessonDTO.URL())) {
+            throw new IllegalArgumentException("Invalid video URL");
         }
 
         Course course = courseOptional.get();
@@ -85,6 +93,10 @@ public class LessonService {
 
         if (optionalLesson.isEmpty()) {
             throw new EntityNotFoundException("Lesson not found");
+        }
+
+        if (lessonDTO.URL() != null && !urlValidator.isValidYouTubeUrl(lessonDTO.URL())) {
+            throw new IllegalArgumentException("Invalid video URL");
         }
 
         Lesson lesson = optionalLesson.get();
