@@ -54,6 +54,7 @@ public class CommentService {
                 commentDTO.content(),
                 user,
                 lesson,
+                false,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -68,4 +69,18 @@ public class CommentService {
         );
     }
 
+    public ReadCommentDTO deleteComment(UUID userId, Long id) {
+        User user = userRepository.findByIdAndActiveTrue(userId).orElseThrow(() -> new EntityNotFoundException("User not found while deleting a comment"));
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Comment not found for deletion"));
+        comment.setContent("[Deleted]");
+        comment.setDeleted(true);
+        comment.setUpdatedAt(LocalDateTime.now());
+        return new ReadCommentDTO(
+                comment.getContent(),
+                comment.getUser().getName(),
+                comment.getLesson().getTitle(),
+                comment.getCreatedAt(),
+                comment.getUpdatedAt()
+        );
+    }
 }

@@ -28,6 +28,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id", nullable = false)
     private Lesson lesson;
+    private Boolean deleted;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 

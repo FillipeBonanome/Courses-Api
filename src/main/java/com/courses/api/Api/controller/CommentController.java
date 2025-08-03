@@ -39,4 +39,17 @@ public class CommentController {
         return ResponseEntity.ok(commentService.postComment(user.getId(), commentDTO));
     }
 
+    @DeleteMapping("{id}")
+    @Transactional
+    public ResponseEntity<ReadCommentDTO> deleteComment(Authentication authentication, @PathVariable(name = "id") Long id) {
+        var authorities = authentication.getAuthorities();
+        //TODO --> Refactor
+        var userOptional = (Optional<User>) authentication.getPrincipal();
+        if(userOptional.isEmpty()) {
+            throw new EntityNotFoundException("User not found");
+        }
+        User user = userOptional.get();
+        return ResponseEntity.ok(commentService.deleteComment(user.getId(), id));
+    }
+
 }
