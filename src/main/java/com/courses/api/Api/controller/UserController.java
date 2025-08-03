@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
@@ -35,7 +36,7 @@ public class UserController {
 
     //TODO --> Refactor
     @GetMapping("{id}")
-    public ResponseEntity<Object> getById(Authentication authentication, @PathVariable(name = "id") Long id) {
+    public ResponseEntity<Object> getById(Authentication authentication, @PathVariable(name = "id") UUID id) {
         var authorities = authentication.getAuthorities();
         boolean isAdmin = authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
@@ -60,7 +61,7 @@ public class UserController {
     @DeleteMapping("{id}")
     @Transactional
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<String> deleteById(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<String> deleteById(@PathVariable(name = "id") UUID id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

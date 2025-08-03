@@ -3,6 +3,8 @@ package com.courses.api.Api.dto.course;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.UUID;
+
 public record CreateCourseDTO(
         @NotBlank
         String title,
@@ -12,7 +14,7 @@ public record CreateCourseDTO(
         String category,
         String thumbnail,
         @NotNull
-        Long instructorId,
+        UUID instructorId,
         @NotBlank
         String slug
 ) {

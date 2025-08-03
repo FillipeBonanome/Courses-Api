@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -42,7 +43,7 @@ public class UserService {
     }
 
     //TODO --> Authorization for reading users
-    public ReadUserDTO getById(Long id) {
+    public ReadUserDTO getById(UUID id) {
         Optional<User> userOptional = userRepository.findById(id);
         if(userOptional.isEmpty()) {
             throw new EntityNotFoundException();
@@ -50,7 +51,7 @@ public class UserService {
         return new ReadUserDTO(userOptional.get());
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         Optional<User> userOptional = userRepository.findById(id);
         if(userOptional.isEmpty()) {
             throw new EntityNotFoundException();
@@ -73,7 +74,7 @@ public class UserService {
         return userRepository.findAllByActiveTrue(pageable).map(ReadUserDTO::new);
     }
 
-    public UpdateUserDTO updateUser(Long id, UpdateUserDTO userDTO) {
+    public UpdateUserDTO updateUser(UUID id, UpdateUserDTO userDTO) {
         Optional<User> userOptional = userRepository.findById(id);
         if(userOptional.isEmpty()) {
             throw new EntityNotFoundException();
