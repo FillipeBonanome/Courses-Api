@@ -69,7 +69,7 @@ public class UserController {
     //TODO --> Refactor
     @PutMapping
     @Transactional
-    public ResponseEntity<UpdateUserDTO> updateUser(Authentication authentication, @RequestBody UpdateUserDTO userDTO) {
+    public ResponseEntity<ReadUserDTO> updateUser(Authentication authentication, @RequestBody UpdateUserDTO userDTO) {
         var userOptional = (Optional<User>) authentication.getPrincipal();
         if (userOptional.isEmpty()) {
             throw new UserException("User not found");

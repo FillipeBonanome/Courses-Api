@@ -74,7 +74,7 @@ public class UserService {
         return userRepository.findAllByActiveTrue(pageable).map(ReadUserDTO::new);
     }
 
-    public UpdateUserDTO updateUser(UUID id, UpdateUserDTO userDTO) {
+    public ReadUserDTO updateUser(UUID id, UpdateUserDTO userDTO) {
         Optional<User> userOptional = userRepository.findById(id);
         if(userOptional.isEmpty()) {
             throw new EntityNotFoundException();
@@ -89,11 +89,7 @@ public class UserService {
         }
 
         User savedUser = userRepository.save(user);
-        return new UpdateUserDTO(
-                savedUser.getName(),
-                savedUser.getUsername(),
-                savedUser.getPassword()
-        );
+        return new ReadUserDTO(savedUser);
     }
 
 }
