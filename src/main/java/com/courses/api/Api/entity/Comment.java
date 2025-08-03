@@ -1,5 +1,6 @@
 package com.courses.api.Api.entity;
 
+import com.courses.api.Api.dto.comment.UpdateCommentDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -32,4 +33,10 @@ public class Comment {
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 
+    public void updateComment(UpdateCommentDTO commentDTO) {
+        if (commentDTO.content() != null) {
+            this.content = commentDTO.content();
+        }
+        this.updatedAt = LocalDateTime.now();
+    }
 }

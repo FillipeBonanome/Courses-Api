@@ -2,6 +2,7 @@ package com.courses.api.Api.controller;
 
 import com.courses.api.Api.dto.comment.CreateCommentDTO;
 import com.courses.api.Api.dto.comment.ReadCommentDTO;
+import com.courses.api.Api.dto.comment.UpdateCommentDTO;
 import com.courses.api.Api.entity.User;
 import com.courses.api.Api.service.CommentService;
 import jakarta.persistence.EntityNotFoundException;
@@ -50,6 +51,19 @@ public class CommentController {
         }
         User user = userOptional.get();
         return ResponseEntity.ok(commentService.deleteComment(user.getId(), id));
+    }
+
+    @PutMapping("{id}")
+    @Transactional
+    public ResponseEntity<ReadCommentDTO> updateComment(Authentication authentication, @PathVariable(name = "id") Long id, @RequestBody UpdateCommentDTO commentDTO) {
+        var authorities = authentication.getAuthorities();
+        //TODO --> Refactor
+        var userOptional = (Optional<User>) authentication.getPrincipal();
+        if(userOptional.isEmpty()) {
+            throw new EntityNotFoundException("User not found");
+        }
+        User user = userOptional.get();
+        return ResponseEntity.ok(commentService.updateComment(user.getId(), id, commentDTO));
     }
 
 }

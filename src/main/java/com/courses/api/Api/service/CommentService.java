@@ -2,9 +2,11 @@ package com.courses.api.Api.service;
 
 import com.courses.api.Api.dto.comment.CreateCommentDTO;
 import com.courses.api.Api.dto.comment.ReadCommentDTO;
+import com.courses.api.Api.dto.comment.UpdateCommentDTO;
 import com.courses.api.Api.entity.Comment;
 import com.courses.api.Api.entity.Lesson;
 import com.courses.api.Api.entity.User;
+import com.courses.api.Api.entity.UserRoles;
 import com.courses.api.Api.repository.CommentRepository;
 import com.courses.api.Api.repository.LessonRepository;
 import com.courses.api.Api.repository.UserRepository;
@@ -69,9 +71,19 @@ public class CommentService {
         );
     }
 
+    //TODO --> Change exceptions
     public ReadCommentDTO deleteComment(UUID userId, Long id) {
         User user = userRepository.findByIdAndActiveTrue(userId).orElseThrow(() -> new EntityNotFoundException("User not found while deleting a comment"));
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Comment not found for deletion"));
+
+        if(comment.getUser().getId() != user.getId() && user.getUserRole() == UserRoles.ROLE_USER) {
+            throw new EntityNotFoundException("You can't delete this comment");
+        }
+
+        if(!user.getActive()) {
+            throw new EntityNotFoundException("You can't delete this comment");
+        }
+
         comment.setContent("[Deleted]");
         comment.setDeleted(true);
         comment.setUpdatedAt(LocalDateTime.now());
@@ -81,6 +93,33 @@ public class CommentService {
                 comment.getLesson().getTitle(),
                 comment.getCreatedAt(),
                 comment.getUpdatedAt()
+        );
+    }
+
+    public ReadCommentDTO updateComment(UUID userId, Long id, UpdateCommentDTO commentDTO) {
+        User user = userRepository.findByIdAndActiveTrue(userId).orElseThrow(() -> new EntityNotFoundException("User not found while deleting a comment"));
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Comment not found for deletion"));
+
+        if(comment.getUser().getId() != user.getId() && user.getUserRole() == UserRoles.ROLE_USER) {
+            throw new EntityNotFoundException("You can't update this comment");
+        }
+
+        if(!user.getActive()) {
+            throw new EntityNotFoundException("You can't update this comment");
+        }
+
+        if(comment.getDeleted()) {
+            throw new EntityNotFoundException("You can't update this comment");
+        }
+
+        comment.updateComment(commentDTO);
+        Comment savedComment = commentRepository.save(comment);
+        return new ReadCommentDTO(
+                savedComment.getContent(),
+                savedComment.getUser().getName(),
+                savedComment.getLesson().getTitle(),
+                savedComment.getCreatedAt(),
+                savedComment.getUpdatedAt()
         );
     }
 }
