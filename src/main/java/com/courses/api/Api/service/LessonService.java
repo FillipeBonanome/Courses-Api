@@ -3,6 +3,7 @@ package com.courses.api.Api.service;
 import com.courses.api.Api.dto.CreateLessonDTO;
 import com.courses.api.Api.dto.ReadLessonDTO;
 import com.courses.api.Api.dto.UpdateLessonDTO;
+import com.courses.api.Api.dto.comment.ReadCommentDTO;
 import com.courses.api.Api.entity.Course;
 import com.courses.api.Api.entity.Lesson;
 import com.courses.api.Api.infra.utils.UrlValidator;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -48,6 +50,7 @@ public class LessonService {
                 lessonDTO.description(),
                 lessonDTO.order(),
                 course,
+                new ArrayList<>(),
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -58,7 +61,14 @@ public class LessonService {
                 savedLesson.getURL(),
                 savedLesson.getDescription(),
                 savedLesson.getOrder(),
-                savedLesson.getCourse().getId()
+                savedLesson.getCourse().getId(),
+                savedLesson.getCommentList().stream().map(c -> new ReadCommentDTO(
+                        c.getContent(),
+                        c.getUser().getName(),
+                        c.getLesson().getTitle(),
+                        c.getCreatedAt(),
+                        c.getUpdatedAt()
+                )).toList()
         );
 
     }
@@ -81,7 +91,14 @@ public class LessonService {
                 lesson.getURL(),
                 lesson.getDescription(),
                 lesson.getOrder(),
-                lesson.getCourse().getId()
+                lesson.getCourse().getId(),
+                lesson.getCommentList().stream().map(c -> new ReadCommentDTO(
+                        c.getContent(),
+                        c.getUser().getName(),
+                        c.getLesson().getTitle(),
+                        c.getCreatedAt(),
+                        c.getUpdatedAt()
+                )).toList()
         );
 
     }
@@ -107,7 +124,14 @@ public class LessonService {
                 savedLesson.getURL(),
                 savedLesson.getDescription(),
                 savedLesson.getOrder(),
-                savedLesson.getCourse().getId()
+                savedLesson.getCourse().getId(),
+                savedLesson.getCommentList().stream().map(c -> new ReadCommentDTO(
+                    c.getContent(),
+                    c.getUser().getName(),
+                    c.getLesson().getTitle(),
+                    c.getCreatedAt(),
+                    c.getUpdatedAt()
+                )).toList()
         );
     }
 }

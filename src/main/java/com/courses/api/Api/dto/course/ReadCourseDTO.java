@@ -1,6 +1,7 @@
 package com.courses.api.Api.dto.course;
 
 import com.courses.api.Api.dto.ReadLessonDTO;
+import com.courses.api.Api.dto.comment.ReadCommentDTO;
 import com.courses.api.Api.dto.user.SimpleReadUserDTO;
 import com.courses.api.Api.entity.Course;
 
@@ -36,7 +37,14 @@ public record ReadCourseDTO(
                         l.getURL(),
                         l.getDescription(),
                         l.getOrder(),
-                        l.getCourse().getId()
+                        l.getCourse().getId(),
+                        l.getCommentList().stream().map(c -> new ReadCommentDTO(
+                                c.getContent(),
+                                c.getUser().getName(),
+                                c.getLesson().getTitle(),
+                                c.getCreatedAt(),
+                                c.getUpdatedAt()
+                        )).toList()
                 )).toList(),
                 course.getCreatedAt(),
                 course.getUpdatedAt());

@@ -1,6 +1,7 @@
 package com.courses.api.Api.service;
 
 import com.courses.api.Api.dto.ReadLessonDTO;
+import com.courses.api.Api.dto.comment.ReadCommentDTO;
 import com.courses.api.Api.dto.course.CreateCourseDTO;
 import com.courses.api.Api.dto.course.ReadCourseDTO;
 import com.courses.api.Api.dto.course.UpdateCourseDTO;
@@ -51,7 +52,14 @@ public class CourseService {
                         l.getURL(),
                         l.getDescription(),
                         l.getOrder(),
-                        l.getCourse().getId()
+                        l.getCourse().getId(),
+                        l.getCommentList().stream().map(c -> new ReadCommentDTO(
+                                c.getContent(),
+                                c.getUser().getName(),
+                                c.getLesson().getTitle(),
+                                c.getCreatedAt(),
+                                c.getUpdatedAt()
+                        )).toList()
                 )).toList(),
                 course.getCreatedAt(),
                 course.getUpdatedAt()
